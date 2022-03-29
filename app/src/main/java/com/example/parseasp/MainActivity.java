@@ -37,9 +37,6 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity {
     ListView lv1;
     TextView result;
-    ImageView image;
-    ArrayList arr =new ArrayList();
-    Context context=this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
         lv1=findViewById(R.id.lv1);
         result=findViewById(R.id.result);
         MyAsyncTask asyncTask =new MyAsyncTask();
-        //Picasso.with(context).load("http://i.imgur.com/DvpvklR.png").into(image);
         asyncTask.execute("http://192.168.137.12:45455/api/controll");
-
     }
     class MyAsyncTask extends AsyncTask<String, String, String> {
         String newData="";
@@ -60,20 +55,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             result.setText(nom);
-
-            //lv1.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,arr));
-            try {
-
-                //image.setImageBitmap(b);
-                //Picasso.get().load(Jobj.getString("m")).into(image);
-
-
-                //  result.setText(Jobj.getString("m"));
-                //image.setImageResource(R.drawable.kurapika);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
         @Override
@@ -88,17 +69,12 @@ public class MainActivity extends AppCompatActivity {
                 publishProgress("start reading!!");
                 InputStream in=new BufferedInputStream(urlConnection.getInputStream());
                 newData=Stream2String(in);
-                //StringReader fis = new StringReader(newData);
-                //JSONObject myJson=new JSONObject(newData);
                 JSONArray myarray=new JSONArray(newData);
                 myarray.length();
                 System.out.println(newData);
-                // JSONArray arrayJ=myJson.getJSONArray("items");
-                // JSONObject Jobj1=arrayJ.getJSONObject(2);
                 for(int i=0;i<myarray.length();i++)
                     nom =nom+ "\n "+myarray.getJSONObject(i).getString("titre");
                 System.out.println(nom);
-                //publishProgress(newData);
             }catch (Exception exp){
                 publishProgress("cannot connect to server");
             }
